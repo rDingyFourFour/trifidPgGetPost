@@ -3,6 +3,9 @@ $( document ).ready( onReady );
 function onReady(){
     $( '#addTrackButton' ).on( 'click', addTrack );
     $('#tracksOut').on('click', '.delete', deleteSong );
+    $('#tracksOut').on('click', '.up', upSongRank);
+    $('#tracksOut').on('click', '.down', downSongRank);
+
     getSongs();
 }
 
@@ -49,6 +52,8 @@ function getSongs(){
             let li = $(`<li>${song.rank}: 
                         ${ song.track} by 
                         ${ song.artist}
+                        <button class="up">Up</button>
+                        <button class="down">Down</button>
                         <button class="delete">Delete</button>
                      </li>`);
             li.data('id', song.id);
@@ -73,6 +78,33 @@ function deleteSong() {
         // handle errors
         alert('error deleting songs. see console for details');
         console.log(err);
-    })
-    
+    }) 
+} //delete song
+
+function upSongRank() {
+    console.log('upping song rank');
+    let id = $(this).closest('li').data('id');
+    changeSongRank('up', id);
+}
+
+function downSongRank() {
+    console.log('downing song rank');
+    let id = $(this).closest('li').data('id');
+    changeSongRank('down', id);
+}
+
+function changeSongRank(direction, id) {
+    $.ajax({
+        type: 'PUT',
+        url: `/songs/${id}`,
+        data: {
+            direction: direction
+        }
+    }).then(function (response) {
+        getSongs(); //refresh the page
+    }).catch(function (err) {
+        // handle errors
+        alert('error changing songs. see console for details');
+        console.log(err);
+    }) 
 }
