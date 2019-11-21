@@ -2,25 +2,11 @@
 const express = require( 'express' );
 const app = express();
 const bodyParser = require( 'body-parser' );
-const pg = require( 'pg' );
+const pool = require('./modules/pool_module.js');
 
 // uses
 app.use( express.static( 'server/public' ) ) ;
 app.use( bodyParser.urlencoded( { extended: true } ) );
-
-// db stuff
-const Pool = pg.Pool;
-const pool = new Pool({
-    database: 'music_library',
-    host: 'localhost',
-    port: 5432,
-    max: 12,
-    idleTimeoutMillis: 30000
-}); // end pool
-
-pool.on('connect', ()=>{
-    console.log( 'connected to db' );
-})
 
 // globals
 const port = 5001;
@@ -54,4 +40,16 @@ app.post( '/songs', ( req, res )=>{
         console.log( 'ERROR INSERTING TRACK -------------->', err );
         res.sendStatus( 400 );
     }) //end query
+})
+
+// delete a song by id
+app.delete('/songs/:id', (req, res)=>{
+    console.log('DELETE hit id =', req.params.id);
+    let queryString = `DELETE FROM "songs" WHERE "id"=$1;`;
+    pool.query(queryString, [req.params.id]).then(result => {
+        res.sendStatus(200);  
+    }).catch(error => {
+        console.log('ERROR DELETING TRACK-------->', error);
+        res.sendStatus(400);  
+    })
 })

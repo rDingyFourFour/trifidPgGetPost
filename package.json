@@ -1,7 +1,7 @@
 {
   "name": "pgLecture",
   "version": "1.0.0",
-  "description": "",
+  "description": "Full Stack Intro ===",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,5 +13,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^7.14.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rDingyFourFour/trifidPgGetPost.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rDingyFourFour/trifidPgGetPost/issues"
+  },
+  "homepage": "https://github.com/rDingyFourFour/trifidPgGetPost#readme"
 }
